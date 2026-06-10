@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import '../../config/constants.dart';
 
 class PieSlice {
   final String label;
@@ -22,12 +23,15 @@ class PieDistribution extends StatelessWidget {
         height: size,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          border: Border.all(color: const Color(0xFF9CA3AF), width: 4),
+          border: Border.all(color: RetroColor.gray300, width: 1),
         ),
         child: const Center(
           child: Text('NOL\nSALDO',
               textAlign: TextAlign.center,
-              style: TextStyle(fontWeight: FontWeight.w900, color: Color(0xFF9CA3AF))),
+              style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 1,
+                  color: RetroColor.gray400)),
         ),
       );
     }
@@ -37,8 +41,7 @@ class PieDistribution extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         shape: BoxShape.circle,
-        border: Border.all(color: Colors.black, width: 4),
-        boxShadow: const [BoxShadow(color: Colors.black, offset: Offset(4, 4))],
+        border: Border.all(color: RetroColor.ink, width: 1),
       ),
       child: CustomPaint(painter: _PiePainter(slices, total.toDouble())),
     );

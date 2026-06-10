@@ -48,9 +48,8 @@ class _DebtTabState extends State<DebtTab> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const Text('CATAT UTANG/PIUTANG BARU',
-                  style: TextStyle(fontWeight: FontWeight.w900, fontSize: 14)),
-              const Divider(color: Colors.black, thickness: 4),
+              const RetroSectionTitle('Catat Utang/Piutang Baru',
+                  icon: Icons.people_outline),
               RetroTextField(
                 label: 'Nama Orang',
                 controller: _personCtrl,
@@ -84,11 +83,11 @@ class _DebtTabState extends State<DebtTab> {
               ),
               const SizedBox(height: 12),
               RetroButton(
-                color: Colors.black,
-                textColor: Colors.white,
+                color: RetroColor.ink,
+                textColor: RetroColor.cream,
                 onPressed: () => _addDebt(state),
                 padding: const EdgeInsets.symmetric(vertical: 12),
-                child: const Center(child: Text('+ TAMBAH', style: TextStyle(fontSize: 13))),
+                child: const Center(child: Text('+ TAMBAH', style: TextStyle(fontSize: 12))),
               ),
             ],
           ),
@@ -100,9 +99,7 @@ class _DebtTabState extends State<DebtTab> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('DAFTAR UTANG / PIUTANG',
-                  style: TextStyle(fontWeight: FontWeight.w900, fontSize: 14)),
-              const Divider(color: Colors.black, thickness: 4),
+              const RetroSectionTitle('Daftar Utang / Piutang'),
               if (state.debts.isEmpty)
                 const Padding(
                   padding: EdgeInsets.symmetric(vertical: 16),
@@ -147,7 +144,7 @@ class _DebtTabState extends State<DebtTab> {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 6),
       padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 2)),
+      decoration: BoxDecoration(border: Border.all(color: RetroColor.ink, width: 1)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -213,7 +210,8 @@ class _DebtTabState extends State<DebtTab> {
                 child: const Text('LUNAS!', style: TextStyle(fontSize: 10)),
               ),
             IconButton(
-              icon: const Icon(Icons.delete, size: 16, color: Colors.red),
+              icon: const Icon(Icons.delete_outline,
+                  size: 16, color: RetroColor.red500),
               onPressed: () async {
                 final ok = await confirmDialog(
                     context, 'Yakin menghapus riwayat ${d.type} ${d.person}?');

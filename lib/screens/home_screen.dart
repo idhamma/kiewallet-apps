@@ -10,6 +10,7 @@ import '../widgets/common/date_filter.dart';
 
 import 'tabs/dashboard_tab.dart';
 import 'tabs/cashflow_tab.dart';
+import 'tabs/scan_tab.dart';
 import 'tabs/transfer_tab.dart';
 import 'tabs/invest_tab.dart';
 import 'tabs/debt_tab.dart';
@@ -43,6 +44,8 @@ class _HomeScreenState extends State<HomeScreen> {
         return const CashFlowTab(type: 'income');
       case 'expense':
         return const CashFlowTab(type: 'expense');
+      case 'scan':
+        return const ScanTab();
       case 'transfer':
         return const TransferTab();
       case 'invest':
@@ -76,10 +79,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 _NavTabs(active: activeTab, onTab: _setTab),
                 Expanded(
                   child: SingleChildScrollView(
-                    padding: const EdgeInsets.all(12),
+                    padding: const EdgeInsets.all(16),
                     child: Center(
                       child: ConstrainedBox(
-                        constraints: const BoxConstraints(maxWidth: 1200),
+                        constraints: const BoxConstraints(maxWidth: 1100),
                         child: _body(),
                       ),
                     ),
@@ -103,42 +106,48 @@ class _Header extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
-        border: Border(bottom: BorderSide(color: Colors.black, width: 4)),
+        border: Border(bottom: BorderSide(color: RetroColor.ink, width: 1)),
       ),
-      padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
+      padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(6),
-                decoration: BoxDecoration(
-                  color: RetroColor.yellow400,
-                  border: Border.all(color: Colors.black, width: 3),
-                  boxShadow: const [BoxShadow(color: Colors.black, offset: Offset(2, 2))],
-                ),
-                child: const Icon(Icons.videogame_asset, size: 22),
+                width: 34,
+                height: 34,
+                alignment: Alignment.center,
+                decoration: const BoxDecoration(color: RetroColor.ink),
+                child: const Icon(Icons.videogame_asset,
+                    size: 18, color: RetroColor.cream),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: 12),
               const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('KieWallet',
+                  Text('KIEWALLET',
                       style: TextStyle(
-                          fontSize: 20, fontWeight: FontWeight.w900, letterSpacing: 2)),
-                  Text('Jangan boros boros le',
-                      style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700)),
+                          fontSize: 16,
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: 4,
+                          color: RetroColor.ink)),
+                  Text('jangan boros boros le',
+                      style: TextStyle(
+                          fontSize: 9,
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 1.5,
+                          color: RetroColor.gray500)),
                 ],
               ),
             ],
           ),
           RetroButton(
-            color: RetroColor.red500,
-            textColor: Colors.white,
+            color: Colors.white,
             onPressed: onLogout,
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            child: const Text('LOGOUT', style: TextStyle(fontSize: 11)),
+            shadowOffset: 0,
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+            child: const Text('LOGOUT', style: TextStyle(fontSize: 10)),
           ),
         ],
       ),
@@ -153,42 +162,85 @@ class _NavTabs extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tabs = <(String, IconData, String, Color)>[
-      ('dashboard', Icons.list, 'Dashboard', RetroColor.purple400),
-      ('income', Icons.trending_up, '+ Kas', RetroColor.green400),
-      ('expense', Icons.trending_down, '- Kas', RetroColor.red400),
-      ('transfer', Icons.swap_horiz, 'Mutasi', RetroColor.teal400),
-      ('invest', Icons.account_balance, 'Investasi', RetroColor.blue400),
-      ('debt', Icons.people, 'Utang', RetroColor.orange400),
-      ('recurring', Icons.repeat, 'Rutin', RetroColor.pink400),
-      ('analysis', Icons.bar_chart, 'Analisis', RetroColor.cyan100),
-      ('data', Icons.storage, 'Data', RetroColor.gray400),
+    const tabs = <(String, IconData, String)>[
+      ('dashboard', Icons.grid_view, 'Dashboard'),
+      ('income', Icons.south_west, '+ Kas'),
+      ('expense', Icons.north_east, '- Kas'),
+      ('scan', Icons.document_scanner_outlined, 'Scan AI'),
+      ('transfer', Icons.swap_horiz, 'Mutasi'),
+      ('invest', Icons.show_chart, 'Investasi'),
+      ('debt', Icons.people_outline, 'Utang'),
+      ('recurring', Icons.repeat, 'Rutin'),
+      ('analysis', Icons.bar_chart, 'Analisis'),
+      ('data', Icons.inventory_2_outlined, 'Data'),
     ];
     return Container(
       decoration: const BoxDecoration(
-        border: Border(bottom: BorderSide(color: Colors.black, width: 4)),
+        border: Border(bottom: BorderSide(color: RetroColor.ink, width: 1)),
       ),
-      padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(
           children: [
             for (final t in tabs) ...[
-              RetroButton(
-                onPressed: () => onTab(t.$1),
-                color: active == t.$1 ? t.$4 : Colors.white,
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(t.$2, size: 14),
-                    const SizedBox(width: 4),
-                    Text(t.$3, style: const TextStyle(fontSize: 11)),
-                  ],
-                ),
+              _NavButton(
+                icon: t.$2,
+                label: t.$3,
+                active: active == t.$1,
+                onTap: () => onTab(t.$1),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: 6),
             ]
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _NavButton extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final bool active;
+  final VoidCallback onTap;
+
+  const _NavButton({
+    required this.icon,
+    required this.label,
+    required this.active,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final fg = active ? RetroColor.cream : RetroColor.ink;
+    return InkWell(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 120),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+        decoration: BoxDecoration(
+          color: active ? RetroColor.ink : Colors.transparent,
+          border: Border.all(
+            color: active ? RetroColor.ink : RetroColor.gray300,
+            width: 1,
+          ),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, size: 13, color: fg),
+            const SizedBox(width: 5),
+            Text(
+              label.toUpperCase(),
+              style: TextStyle(
+                fontSize: 10,
+                fontWeight: FontWeight.w700,
+                letterSpacing: 0.8,
+                color: fg,
+              ),
+            ),
           ],
         ),
       ),

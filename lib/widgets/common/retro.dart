@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../config/constants.dart';
 
+/// Kotak kertas: border tinta tipis, tanpa bayangan (flat) secara default.
+/// `shadowOffset` > 0 memberi bayangan keras kecil ala cetakan offset.
 class RetroBox extends StatelessWidget {
   final Widget child;
   final Color color;
@@ -14,9 +16,9 @@ class RetroBox extends StatelessWidget {
     super.key,
     required this.child,
     this.color = Colors.white,
-    this.padding = const EdgeInsets.all(12),
-    this.borderWidth = 4,
-    this.shadowOffset = 4,
+    this.padding = const EdgeInsets.all(14),
+    this.borderWidth = 1,
+    this.shadowOffset = 0,
     this.borderRadius = BorderRadius.zero,
     this.width,
   });
@@ -28,17 +30,60 @@ class RetroBox extends StatelessWidget {
       padding: padding,
       decoration: BoxDecoration(
         color: color,
-        border: Border.all(color: Colors.black, width: borderWidth),
+        border: Border.all(color: RetroColor.ink, width: borderWidth),
         borderRadius: borderRadius,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black,
-            offset: Offset(shadowOffset, shadowOffset),
-            blurRadius: 0,
-          ),
-        ],
+        boxShadow: shadowOffset <= 0
+            ? null
+            : [
+                BoxShadow(
+                  color: RetroColor.ink,
+                  offset: Offset(shadowOffset, shadowOffset),
+                  blurRadius: 0,
+                ),
+              ],
       ),
       child: child,
+    );
+  }
+}
+
+/// Judul seksi minimal: label kecil kapital + garis tipis di bawahnya.
+class RetroSectionTitle extends StatelessWidget {
+  final String text;
+  final IconData? icon;
+  final Widget? trailing;
+
+  const RetroSectionTitle(this.text, {super.key, this.icon, this.trailing});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Row(
+          children: [
+            if (icon != null) ...[
+              Icon(icon, size: 14, color: RetroColor.ink),
+              const SizedBox(width: 6),
+            ],
+            Expanded(
+              child: Text(
+                text.toUpperCase(),
+                style: const TextStyle(
+                  fontWeight: FontWeight.w800,
+                  fontSize: 11,
+                  letterSpacing: 1.5,
+                  color: RetroColor.ink,
+                ),
+              ),
+            ),
+            if (trailing != null) trailing!,
+          ],
+        ),
+        const SizedBox(height: 8),
+        Container(height: 1, color: RetroColor.ink),
+        const SizedBox(height: 12),
+      ],
     );
   }
 }
@@ -57,10 +102,10 @@ class RetroButton extends StatefulWidget {
     required this.onPressed,
     required this.child,
     this.color = Colors.white,
-    this.textColor = Colors.black,
+    this.textColor = RetroColor.ink,
     this.padding = const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-    this.borderWidth = 2,
-    this.shadowOffset = 3,
+    this.borderWidth = 1,
+    this.shadowOffset = 2,
   });
 
   @override
@@ -74,7 +119,7 @@ class _RetroButtonState extends State<RetroButton> {
   Widget build(BuildContext context) {
     final disabled = widget.onPressed == null;
     return Opacity(
-      opacity: disabled ? 0.6 : 1,
+      opacity: disabled ? 0.5 : 1,
       child: GestureDetector(
         onTapDown: (_) => setState(() => _pressed = true),
         onTapUp: (_) => setState(() => _pressed = false),
@@ -83,16 +128,16 @@ class _RetroButtonState extends State<RetroButton> {
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 60),
           transform: Matrix4.translationValues(
-              _pressed ? 2 : 0, _pressed ? 2 : 0, 0),
+              _pressed ? 1 : 0, _pressed ? 1 : 0, 0),
           padding: widget.padding,
           decoration: BoxDecoration(
             color: widget.color,
-            border: Border.all(color: Colors.black, width: widget.borderWidth),
-            boxShadow: _pressed
-                ? const [BoxShadow(color: Colors.black, offset: Offset(1, 1))]
+            border: Border.all(color: RetroColor.ink, width: widget.borderWidth),
+            boxShadow: _pressed || widget.shadowOffset <= 0
+                ? null
                 : [
                     BoxShadow(
-                      color: Colors.black,
+                      color: RetroColor.ink,
                       offset: Offset(widget.shadowOffset, widget.shadowOffset),
                     ),
                   ],
@@ -100,17 +145,34 @@ class _RetroButtonState extends State<RetroButton> {
           child: DefaultTextStyle.merge(
             style: TextStyle(
               color: widget.textColor,
-              fontWeight: FontWeight.w900,
+              fontWeight: FontWeight.w700,
               fontFamily: 'monospace',
-              fontSize: 13,
+              fontSize: 12,
+              letterSpacing: 0.5,
             ),
-            child: widget.child,
+            child: IconTheme.merge(
+              data: IconThemeData(color: widget.textColor, size: 14),
+              child: widget.child,
+            ),
           ),
         ),
       ),
     );
   }
 }
+
+Widget _fieldLabel(String label) => Padding(
+      padding: const EdgeInsets.only(bottom: 4),
+      child: Text(
+        label.toUpperCase(),
+        style: const TextStyle(
+          fontWeight: FontWeight.w700,
+          fontSize: 9.5,
+          letterSpacing: 0.8,
+          color: RetroColor.gray500,
+        ),
+      ),
+    );
 
 class RetroTextField extends StatelessWidget {
   final TextEditingController? controller;
@@ -145,12 +207,11 @@ class RetroTextField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (label != null)
-          Text(label!, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 11)),
+        if (label != null) _fieldLabel(label!),
         Container(
           decoration: BoxDecoration(
             color: background,
-            border: Border.all(color: Colors.black, width: 2),
+            border: Border.all(color: RetroColor.ink, width: 1),
           ),
           child: TextFormField(
             controller: controller,
@@ -160,13 +221,17 @@ class RetroTextField extends StatelessWidget {
             obscureText: obscureText,
             maxLines: obscureText ? 1 : maxLines,
             style: textStyle ??
-                const TextStyle(fontFamily: 'monospace', fontSize: 13, color: Colors.black),
+                const TextStyle(
+                    fontFamily: 'monospace', fontSize: 13, color: RetroColor.ink),
             decoration: InputDecoration(
               border: InputBorder.none,
               isDense: true,
+              filled: false,
               hintText: hint,
-              hintStyle: const TextStyle(color: RetroColor.gray400, fontFamily: 'monospace'),
-              contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+              hintStyle: const TextStyle(
+                  color: RetroColor.gray400, fontFamily: 'monospace', fontSize: 12),
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 10, vertical: 9),
             ),
             validator: required
                 ? (v) => (v == null || v.trim().isEmpty) ? 'Wajib diisi' : null
@@ -201,14 +266,13 @@ class RetroDropdown<T> extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (label != null)
-          Text(label!, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 11)),
+        if (label != null) _fieldLabel(label!),
         Container(
           decoration: BoxDecoration(
             color: background,
-            border: Border.all(color: Colors.black, width: 2),
+            border: Border.all(color: RetroColor.ink, width: 1),
           ),
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
           child: DropdownButton<T>(
             value: items.contains(value) ? value : (items.isNotEmpty ? items.first : null),
             items: items
@@ -217,11 +281,14 @@ class RetroDropdown<T> extends StatelessWidget {
             onChanged: onChanged,
             isExpanded: true,
             underline: const SizedBox.shrink(),
+            dropdownColor: RetroColor.surface,
+            icon: const Icon(Icons.keyboard_arrow_down,
+                size: 16, color: RetroColor.ink),
             style: const TextStyle(
-              color: Colors.black,
+              color: RetroColor.ink,
               fontFamily: 'monospace',
               fontSize: 13,
-              fontWeight: FontWeight.w700,
+              fontWeight: FontWeight.w600,
             ),
           ),
         ),
@@ -233,7 +300,7 @@ class RetroDropdown<T> extends StatelessWidget {
 Future<bool> confirmDialog(BuildContext context, String message) async {
   final result = await showDialog<bool>(
     context: context,
-    barrierColor: Colors.black54,
+    barrierColor: Colors.black45,
     builder: (ctx) {
       return Center(
         child: Padding(
@@ -243,41 +310,46 @@ Future<bool> confirmDialog(BuildContext context, String message) async {
             child: Material(
               color: Colors.transparent,
               child: RetroBox(
-                color: RetroColor.yellow100,
+                color: RetroColor.surface,
                 padding: const EdgeInsets.all(24),
-                shadowOffset: 8,
+                shadowOffset: 4,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(Icons.warning_rounded, color: Colors.red, size: 48),
-                    const SizedBox(height: 8),
+                    const Icon(Icons.warning_amber_rounded,
+                        color: RetroColor.red500, size: 36),
+                    const SizedBox(height: 10),
                     const Text('KONFIRMASI',
-                        style: TextStyle(fontWeight: FontWeight.w900, fontSize: 20)),
-                    const SizedBox(height: 8),
+                        style: TextStyle(
+                            fontWeight: FontWeight.w800,
+                            fontSize: 15,
+                            letterSpacing: 3)),
+                    const SizedBox(height: 10),
                     Text(message,
                         textAlign: TextAlign.center,
-                        style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 12)),
-                    const SizedBox(height: 16),
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w600, fontSize: 12)),
+                    const SizedBox(height: 18),
                     Row(
                       children: [
                         Expanded(
                           child: RetroButton(
-                            color: RetroColor.red400,
-                            textColor: Colors.white,
+                            color: RetroColor.ink,
+                            textColor: RetroColor.cream,
                             onPressed: () => Navigator.of(ctx).pop(true),
-                            child: const Text('YA, LANJUTKAN',
+                            child: const Text('YA, LANJUT',
                                 textAlign: TextAlign.center,
-                                style: TextStyle(fontSize: 12)),
+                                style: TextStyle(fontSize: 11)),
                           ),
                         ),
                         const SizedBox(width: 8),
                         Expanded(
                           child: RetroButton(
-                            color: RetroColor.gray300,
+                            color: Colors.white,
                             onPressed: () => Navigator.of(ctx).pop(false),
                             child: const Text('BATAL',
                                 textAlign: TextAlign.center,
-                                style: TextStyle(fontSize: 12)),
+                                style: TextStyle(fontSize: 11)),
                           ),
                         ),
                       ],

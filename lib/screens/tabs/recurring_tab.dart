@@ -51,9 +51,7 @@ class _RecurringTabState extends State<RecurringTab> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const Text('TAGIHAN RUTIN',
-                  style: TextStyle(fontWeight: FontWeight.w900, fontSize: 14)),
-              const Divider(color: Colors.black, thickness: 4),
+              const RetroSectionTitle('Tagihan Rutin', icon: Icons.repeat),
               RetroTextField(
                 label: 'Nama Tagihan',
                 controller: _nameCtrl,
@@ -108,12 +106,12 @@ class _RecurringTabState extends State<RecurringTab> {
               ),
               const SizedBox(height: 12),
               RetroButton(
-                color: Colors.black,
-                textColor: Colors.white,
+                color: RetroColor.ink,
+                textColor: RetroColor.cream,
                 onPressed: () => _save(state),
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 child: const Center(
-                    child: Text('+ SIMPAN TAGIHAN', style: TextStyle(fontSize: 13))),
+                    child: Text('+ SIMPAN TAGIHAN', style: TextStyle(fontSize: 12))),
               ),
             ],
           ),
@@ -158,8 +156,7 @@ class _RecurringTabState extends State<RecurringTab> {
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: Colors.white,
-        border: Border.all(color: Colors.black, width: 4),
-        boxShadow: const [BoxShadow(color: Colors.black, offset: Offset(4, 4))],
+        border: Border.all(color: RetroColor.ink, width: 1),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -187,7 +184,8 @@ class _RecurringTabState extends State<RecurringTab> {
                 ),
               ),
               IconButton(
-                icon: const Icon(Icons.delete, size: 16, color: Colors.red),
+                icon: const Icon(Icons.delete_outline,
+                    size: 16, color: RetroColor.red500),
                 onPressed: () async {
                   final ok = await confirmDialog(
                       context, 'Yakin menghapus tagihan ${r.name}?');

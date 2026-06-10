@@ -59,33 +59,26 @@ class _CashFlowTabState extends State<CashFlowTab> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Row(children: [
-                Icon(isIncome ? Icons.trending_up : Icons.trending_down,
-                    color: isIncome ? RetroColor.green600 : RetroColor.red600),
-                const SizedBox(width: 8),
-                Text(
-                  'CATAT ${isIncome ? "PEMASUKAN" : "PENGELUARAN"}',
-                  style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 16),
-                ),
-              ]),
-              const Divider(color: Colors.black, thickness: 4),
+              RetroSectionTitle(
+                'CATAT ${isIncome ? "PEMASUKAN" : "PENGELUARAN"}',
+                icon: isIncome ? Icons.south_west : Icons.north_east,
+              ),
               if (!isIncome) ...[
                 Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     color: RetroColor.orange100,
-                    border: Border.all(color: Colors.black, width: 2),
+                    border: Border.all(color: RetroColor.ink, width: 1),
                   ),
                   child: Row(children: [
                     Checkbox(
                       value: splitEnabled,
                       onChanged: (v) => setState(() => splitEnabled = v ?? false),
-                      activeColor: RetroColor.orange400,
                     ),
-                    const Icon(Icons.call_split, size: 16),
+                    const Icon(Icons.call_split, size: 14),
                     const SizedBox(width: 4),
                     const Text('Mode Split Bill (Patungan)',
-                        style: TextStyle(fontWeight: FontWeight.w900, fontSize: 12)),
+                        style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12)),
                   ]),
                 ),
                 const SizedBox(height: 12),
@@ -137,7 +130,7 @@ class _CashFlowTabState extends State<CashFlowTab> {
               const SizedBox(height: 16),
               RetroButton(
                 color: isIncome ? RetroColor.green400 : RetroColor.red500,
-                textColor: isIncome ? Colors.black : Colors.white,
+                textColor: isIncome ? RetroColor.ink : Colors.white,
                 onPressed: () => _save(state),
                 padding: const EdgeInsets.symmetric(vertical: 14),
                 child: const Center(
@@ -174,12 +167,12 @@ class _CashFlowTabState extends State<CashFlowTab> {
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                 color: Colors.white,
-                border: Border.all(color: Colors.black, width: 2),
+                border: Border.all(color: RetroColor.ink, width: 1),
               ),
               child: Row(children: [
-                const Icon(Icons.calendar_today, size: 14),
+                const Icon(Icons.calendar_today, size: 13),
                 const SizedBox(width: 8),
-                Text(date, style: const TextStyle(fontFamily: 'monospace')),
+                Text(date, style: const TextStyle(fontFamily: 'monospace', fontSize: 12)),
               ]),
             ),
           ),
@@ -207,12 +200,12 @@ class _CashFlowTabState extends State<CashFlowTab> {
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                 color: Colors.white,
-                border: Border.all(color: Colors.black, width: 2),
+                border: Border.all(color: RetroColor.ink, width: 1),
               ),
               child: Row(children: [
-                const Icon(Icons.access_time, size: 14),
+                const Icon(Icons.access_time, size: 13),
                 const SizedBox(width: 8),
-                Text(time, style: const TextStyle(fontFamily: 'monospace')),
+                Text(time, style: const TextStyle(fontFamily: 'monospace', fontSize: 12)),
               ]),
             ),
           ),

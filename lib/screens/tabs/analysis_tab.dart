@@ -53,10 +53,13 @@ class _AnalysisTabState extends State<AnalysisTab> {
             crossAxisAlignment: WrapCrossAlignment.center,
             children: [
               const Row(mainAxisSize: MainAxisSize.min, children: [
-                Icon(Icons.bar_chart, size: 22),
-                SizedBox(width: 8),
+                Icon(Icons.bar_chart, size: 14),
+                SizedBox(width: 6),
                 Text('ANALISIS KEUANGAN',
-                    style: TextStyle(fontWeight: FontWeight.w900, fontSize: 16)),
+                    style: TextStyle(
+                        fontWeight: FontWeight.w800,
+                        fontSize: 11,
+                        letterSpacing: 1.5)),
               ]),
               GlobalDateFilter(value: widget.dateFilter, onChanged: widget.onDateChanged),
             ],
@@ -69,9 +72,7 @@ class _AnalysisTabState extends State<AnalysisTab> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const Text('PILIH PARAMETER',
-                  style: TextStyle(fontWeight: FontWeight.w900, fontSize: 13)),
-              const Divider(color: Colors.black, thickness: 4),
+              const RetroSectionTitle('Pilih Parameter'),
               RetroDropdown<String>(
                 label: 'Tipe Transaksi',
                 value: analysisType,
@@ -91,14 +92,18 @@ class _AnalysisTabState extends State<AnalysisTab> {
                 onChanged: (v) => setState(() => analysisAccount = v!),
               ),
               const SizedBox(height: 8),
-              const Text('Pilih Kategori untuk Dianalisis:',
-                  style: TextStyle(fontWeight: FontWeight.w900, fontSize: 11)),
+              const Text('PILIH KATEGORI UNTUK DIANALISIS',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 9.5,
+                      letterSpacing: 0.8,
+                      color: RetroColor.gray500)),
               Container(
                 margin: const EdgeInsets.only(top: 4),
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
                   color: RetroColor.gray100,
-                  border: Border.all(color: Colors.black, width: 2),
+                  border: Border.all(color: RetroColor.ink, width: 1),
                 ),
                 child: Column(
                   children: [
@@ -139,16 +144,14 @@ class _AnalysisTabState extends State<AnalysisTab> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text(
-                'HASIL ANALISIS (${analysisType == "expense" ? "PENGELUARAN" : "PEMASUKAN"})',
-                style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 13),
+              RetroSectionTitle(
+                'Hasil Analisis (${analysisType == "expense" ? "Pengeluaran" : "Pemasukan"})',
               ),
-              const Divider(color: Colors.black, thickness: 4),
               if (analysisCats.isEmpty)
                 Container(
                   padding: const EdgeInsets.all(24),
                   decoration: BoxDecoration(
-                    border: Border.all(color: RetroColor.gray300, width: 4),
+                    border: Border.all(color: RetroColor.gray300, width: 1),
                   ),
                   child: const Center(
                     child: Text(
@@ -164,17 +167,17 @@ class _AnalysisTabState extends State<AnalysisTab> {
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
                     color: analysisType == 'expense' ? RetroColor.red100 : RetroColor.green100,
-                    border: Border.all(color: Colors.black, width: 4),
-                    boxShadow: const [BoxShadow(color: Colors.black, offset: Offset(4, 4))],
+                    border: Border.all(color: RetroColor.ink, width: 1),
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Total ${analysisType == "expense" ? "Pengeluaran" : "Pemasukan"}',
+                        'TOTAL ${analysisType == "expense" ? "PENGELUARAN" : "PEMASUKAN"}',
                         style: const TextStyle(
-                            fontSize: 10,
-                            fontWeight: FontWeight.w900,
+                            fontSize: 9,
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 1,
                             color: RetroColor.gray500),
                       ),
                       Text(formatRp(total),
@@ -193,8 +196,12 @@ class _AnalysisTabState extends State<AnalysisTab> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                const Text('Rincian Per Kategori:',
-                    style: TextStyle(fontWeight: FontWeight.w900, fontSize: 11)),
+                const Text('RINCIAN PER KATEGORI',
+                    style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 9.5,
+                        letterSpacing: 0.8,
+                        color: RetroColor.gray500)),
                 const SizedBox(height: 8),
                 if (breakdownList.isEmpty)
                   const Text('Tidak ada transaksi yang ditemukan.',
@@ -225,10 +232,10 @@ class _AnalysisTabState extends State<AnalysisTab> {
                           ),
                           const SizedBox(height: 4),
                           Container(
-                            height: 14,
+                            height: 10,
                             decoration: BoxDecoration(
                               color: RetroColor.gray200,
-                              border: Border.all(color: Colors.black, width: 2),
+                              border: Border.all(color: RetroColor.ink, width: 1),
                             ),
                             child: FractionallySizedBox(
                               alignment: Alignment.centerLeft,

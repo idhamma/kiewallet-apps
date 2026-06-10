@@ -53,13 +53,7 @@ class DashboardTab extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Row(children: [
-                Icon(Icons.show_chart, size: 20),
-                SizedBox(width: 8),
-                Text('GRAFIK CASH FLOW',
-                    style: TextStyle(fontWeight: FontWeight.w900, fontSize: 14)),
-              ]),
-              const Divider(color: Colors.black, thickness: 4),
+              const RetroSectionTitle('Grafik Cash Flow', icon: Icons.show_chart),
               AdvancedCashFlow(
                 data: chartPoints,
                 hideIncome: state.hideIncome,
@@ -74,22 +68,16 @@ class DashboardTab extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Expanded(
-                    child: Text('KAS PEGANGAN (LIQUID)',
-                        style: TextStyle(fontWeight: FontWeight.w900, fontSize: 14)),
-                  ),
-                  RetroButton(
-                    onPressed: goTransfer,
-                    color: Colors.white,
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    child: const Text('Detail Mutasi', style: TextStyle(fontSize: 10)),
-                  ),
-                ],
+              RetroSectionTitle(
+                'Kas Pegangan (Liquid)',
+                trailing: RetroButton(
+                  onPressed: goTransfer,
+                  color: Colors.white,
+                  shadowOffset: 0,
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  child: const Text('DETAIL MUTASI', style: TextStyle(fontSize: 9)),
+                ),
               ),
-              const Divider(color: Colors.black, thickness: 4),
               if (liquidByAcc.isEmpty)
                 const Padding(
                   padding: EdgeInsets.symmetric(vertical: 16),
@@ -123,9 +111,7 @@ class DashboardTab extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('TOP PENGELUARAN',
-                  style: TextStyle(fontWeight: FontWeight.w900, fontSize: 14)),
-              const Divider(color: Colors.black, thickness: 4),
+              const RetroSectionTitle('Top Pengeluaran'),
               if (expByCat.isEmpty)
                 const Padding(
                   padding: EdgeInsets.symmetric(vertical: 16),
@@ -157,8 +143,9 @@ class DashboardTab extends StatelessWidget {
                 Expanded(
                   child: Text(label.toUpperCase(),
                       style: const TextStyle(
-                          fontSize: 10,
-                          fontWeight: FontWeight.w900,
+                          fontSize: 9,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 1,
                           color: RetroColor.gray500)),
                 ),
                 InkWell(
@@ -188,7 +175,7 @@ class DashboardTab extends StatelessWidget {
         card('Pengeluaran', sum.expense, Colors.white, RetroColor.red700, s.hideExpense, 'expense'),
         card('Kas Pegangan', liquid, RetroColor.teal100, RetroColor.teal900, s.hideLiquid, 'liquid'),
         card('Saldo Periode', sum.balance, RetroColor.yellow200,
-            sum.balance < 0 ? RetroColor.red700 : Colors.black, s.hidePeriod, 'period'),
+            sum.balance < 0 ? RetroColor.red700 : RetroColor.ink, s.hidePeriod, 'period'),
       ];
       return Column(children: [
         GridView.count(
@@ -268,10 +255,10 @@ class DashboardTab extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Container(
-            height: 16,
+            height: 10,
             decoration: BoxDecoration(
               color: RetroColor.gray200,
-              border: Border.all(color: Colors.black, width: 2),
+              border: Border.all(color: RetroColor.ink, width: 1),
             ),
             child: FractionallySizedBox(
               alignment: Alignment.centerLeft,
@@ -290,9 +277,7 @@ class DashboardTab extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('HISTORY TRANSAKSI',
-              style: TextStyle(fontWeight: FontWeight.w900, fontSize: 14)),
-          const Divider(color: Colors.black, thickness: 4),
+          const RetroSectionTitle('History Transaksi'),
           if (txs.isEmpty)
             const Padding(
               padding: EdgeInsets.symmetric(vertical: 16),
@@ -305,9 +290,10 @@ class DashboardTab extends StatelessWidget {
                 children: [
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                    color: Colors.black,
+                    color: RetroColor.ink,
                     child: Text(t.account,
-                        style: const TextStyle(color: Colors.white, fontSize: 10)),
+                        style: const TextStyle(
+                            color: RetroColor.cream, fontSize: 9, letterSpacing: 0.5)),
                   ),
                   const SizedBox(width: 8),
                   Expanded(
@@ -333,7 +319,8 @@ class DashboardTab extends StatelessWidget {
                     ),
                   ),
                   IconButton(
-                    icon: const Icon(Icons.delete, size: 16, color: Colors.red),
+                    icon: const Icon(Icons.delete_outline,
+                        size: 16, color: RetroColor.red500),
                     onPressed: () async {
                       final ok = await confirmDialog(ctx, 'Yakin menghapus transaksi ini?');
                       if (ok) state.deleteTransaction(t.id);
@@ -360,8 +347,11 @@ List<CashFlowPoint> _buildChartPoints(List<Tx> txs, DateRange range) {
       if ((t.type == 'income' || t.type == 'expense') && t.time != null) {
         final h = int.tryParse(t.time!.substring(0, 2));
         if (h == null || h < 0 || h > 23) continue;
-        if (t.type == 'income') inc[h] += t.amount.toDouble();
-        else exp[h] += t.amount.toDouble();
+        if (t.type == 'income') {
+          inc[h] += t.amount.toDouble();
+        } else {
+          exp[h] += t.amount.toDouble();
+        }
       }
     }
     return [for (var i = 0; i < 24; i++)

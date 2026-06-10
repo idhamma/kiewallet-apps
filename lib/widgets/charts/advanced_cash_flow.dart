@@ -77,8 +77,8 @@ class _AdvancedCashFlowState extends State<AdvancedCashFlow> {
 
   Widget _legend() {
     Widget swatch(Color c) => Container(
-        width: 12, height: 12,
-        decoration: BoxDecoration(color: c, border: Border.all(color: Colors.black, width: 1)));
+        width: 10, height: 10,
+        decoration: BoxDecoration(color: c, border: Border.all(color: RetroColor.ink, width: 1)));
     Widget tile(Widget icon, String text) => Row(
         mainAxisSize: MainAxisSize.min,
         children: [icon, const SizedBox(width: 4), Text(text, style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w700))]);
@@ -99,20 +99,26 @@ class _ModeBtn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final fg = active ? RetroColor.cream : RetroColor.ink;
     return InkWell(
       onTap: onTap,
       child: Container(
         margin: const EdgeInsets.only(bottom: 4),
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         decoration: BoxDecoration(
-          color: active ? RetroColor.yellow300 : Colors.white,
-          border: Border.all(color: Colors.black, width: 2),
-          boxShadow: const [BoxShadow(color: Colors.black, offset: Offset(2, 2))],
+          color: active ? RetroColor.ink : Colors.white,
+          border: Border.all(
+              color: active ? RetroColor.ink : RetroColor.gray300, width: 1),
         ),
         child: Row(mainAxisSize: MainAxisSize.min, children: [
-          Icon(icon, size: 12),
+          Icon(icon, size: 11, color: fg),
           const SizedBox(width: 4),
-          Text(label, style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w900)),
+          Text(label.toUpperCase(),
+              style: TextStyle(
+                  fontSize: 9,
+                  letterSpacing: 0.5,
+                  fontWeight: FontWeight.w700,
+                  color: fg)),
         ]),
       ),
     );
@@ -161,14 +167,14 @@ class _CashFlowPainter extends CustomPainter {
     double yCum(double v) =>
         h - padBottom - ((v - cumMin) / cumRange) * (h - padTop - padBottom);
 
-    final gridPaint = Paint()..color = const Color(0xFFD1D5DB)..strokeWidth = 1;
+    final gridPaint = Paint()..color = RetroColor.gray200..strokeWidth = 1;
     for (final p in [0.25, 0.5, 0.75]) {
       final y = padTop + (h - padTop - padBottom) * p;
       canvas.drawLine(Offset(padX, y), Offset(w - padX, y), gridPaint);
     }
 
     canvas.drawLine(Offset(padX, yIO(0)), Offset(w - padX, yIO(0)),
-        Paint()..color = Colors.black..strokeWidth = 1.5);
+        Paint()..color = RetroColor.ink..strokeWidth = 1);
 
     if (mode == CashFlowMode.area) {
       final incPath = Path()..moveTo(xFor(0), yIO(0));
@@ -179,15 +185,15 @@ class _CashFlowPainter extends CustomPainter {
       }
       incPath..lineTo(xFor(data.length - 1), yIO(0))..close();
       expPath..lineTo(xFor(data.length - 1), yIO(0))..close();
-      canvas.drawPath(incPath, Paint()..color = const Color(0x884ADE80));
-      canvas.drawPath(expPath, Paint()..color = const Color(0x88F87171));
+      canvas.drawPath(incPath, Paint()..color = const Color(0x888AA678));
+      canvas.drawPath(expPath, Paint()..color = const Color(0x88BF6B57));
     }
 
     if (mode == CashFlowMode.bars || mode == CashFlowMode.combo) {
       final barW = ((w - padX * 2) / data.length / 2.4).clamp(2.0, 14.0);
       final incPaint = Paint()..color = RetroColor.green400;
       final expPaint = Paint()..color = RetroColor.red400;
-      final stroke = Paint()..color = Colors.black..style = PaintingStyle.stroke..strokeWidth = 1.5;
+      final stroke = Paint()..color = RetroColor.ink..style = PaintingStyle.stroke..strokeWidth = 1;
       for (var i = 0; i < data.length; i++) {
         final x = xFor(i);
         final incRect = Rect.fromLTRB(x - barW - 1, yIO(incs[i]), x - 1, yIO(0));
@@ -232,7 +238,7 @@ class _CashFlowPainter extends CustomPainter {
     }
 
     const textStyle = TextStyle(
-        color: Colors.black, fontWeight: FontWeight.w900, fontSize: 9, fontFamily: 'monospace');
+        color: RetroColor.ink, fontWeight: FontWeight.w700, fontSize: 9, fontFamily: 'monospace');
     for (var i = 0; i < data.length; i++) {
       final tp = TextPainter(
         text: TextSpan(text: data[i].label, style: textStyle),
