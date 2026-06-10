@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../config/constants.dart';
 import '../../utils/date_utils.dart';
 
 class DateRange {
@@ -53,13 +54,13 @@ class GlobalDateFilter extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
         decoration: BoxDecoration(
           color: Colors.white,
-          border: Border.all(color: Colors.black, width: 2),
+          border: Border.all(color: RetroColor.ink, width: 1),
         ),
         child: Text(text,
             style: const TextStyle(
-              color: Colors.black,
+              color: RetroColor.ink,
               fontFamily: 'monospace',
-              fontWeight: FontWeight.w900,
+              fontWeight: FontWeight.w700,
               fontSize: 12,
             )),
       ),
@@ -73,24 +74,31 @@ class GlobalDateFilter extends StatelessWidget {
       spacing: 8,
       runSpacing: 8,
       children: [
-        const Icon(Icons.calendar_today, size: 16),
-        const Text('Rentang:', style: TextStyle(fontWeight: FontWeight.w900, fontSize: 12)),
+        const Icon(Icons.calendar_today, size: 14, color: RetroColor.gray500),
+        const Text('RENTANG',
+            style: TextStyle(
+                fontWeight: FontWeight.w700,
+                fontSize: 10,
+                letterSpacing: 1,
+                color: RetroColor.gray500)),
         _dateChip(value.start, () => _pickStart(context)),
-        const Text('-', style: TextStyle(fontWeight: FontWeight.w900)),
+        const Text('-', style: TextStyle(fontWeight: FontWeight.w700)),
         _dateChip(value.end, () => _pickEnd(context)),
         Container(
           decoration: BoxDecoration(
             color: Colors.white,
-            border: Border.all(color: Colors.black, width: 2),
-            boxShadow: const [BoxShadow(color: Colors.black, offset: Offset(2, 2))],
+            border: Border.all(color: RetroColor.ink, width: 1),
           ),
           padding: const EdgeInsets.symmetric(horizontal: 8),
           child: DropdownButton<String>(
             value: _matchPreset(),
             underline: const SizedBox.shrink(),
+            dropdownColor: RetroColor.surface,
+            icon: const Icon(Icons.keyboard_arrow_down,
+                size: 16, color: RetroColor.ink),
             style: const TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.w900,
+              color: RetroColor.ink,
+              fontWeight: FontWeight.w700,
               fontSize: 12,
               fontFamily: 'monospace',
             ),

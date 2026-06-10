@@ -27,6 +27,10 @@ class AppState extends ChangeNotifier {
   List<PortfolioItem> portfolio = [];
   List<CustomBudget> customBudgets = [];
 
+  /// API key Anthropic untuk fitur Scan AI (tersimpan di Firestore user,
+  /// fallback ke --dart-define=ANTHROPIC_API_KEY saat build).
+  String aiApiKey = const String.fromEnvironment('ANTHROPIC_API_KEY');
+
   bool hideIncome = false, hideExpense = false, hideLiquid = false;
   bool hidePeriod = false, hideInvest = false, hideNetWorth = false;
 
@@ -53,6 +57,7 @@ class AppState extends ChangeNotifier {
         recurring = [];
         portfolio = [];
         customBudgets = [];
+        aiApiKey = const String.fromEnvironment('ANTHROPIC_API_KEY');
       } else {
         _stateSub = _fs.watchStateFor(u.uid).listen(_onSnapshot);
       }
@@ -94,7 +99,16 @@ class AppState extends ChangeNotifier {
           .map((m) => CustomBudget.fromMap(Map<String, dynamic>.from(m)))
           .toList();
     }
+    if (data['aiApiKey'] is String && (data['aiApiKey'] as String).isNotEmpty) {
+      aiApiKey = data['aiApiKey'] as String;
+    }
     notifyListeners();
+  }
+
+  Future<void> setAiApiKey(String key) async {
+    aiApiKey = key.trim();
+    notifyListeners();
+    await _fs.saveField('aiApiKey', aiApiKey);
   }
 
   Future<void> _saveTransactions() async =>

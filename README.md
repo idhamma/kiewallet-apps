@@ -134,11 +134,32 @@ Tambah transaksi di mobile → real-time muncul di tab browser yang sedang buka 
 
 Di Web, request Yahoo dilewatkan via `corsproxy.io` (sama seperti React). Di mobile native tidak butuh proxy.
 
+## Scan AI (struk / QRIS / invoice → transaksi otomatis)
+
+Tab **Scan AI** menerima foto/screenshot struk belanja, pembayaran QRIS, invoice,
+atau bukti transfer, lalu mengekstraknya menjadi pemasukan/pengeluaran memakai
+**Claude API** (vision + structured output, model `claude-opus-4-8`).
+
+Cara pakai:
+
+1. Buat API key di [console.anthropic.com](https://console.anthropic.com).
+2. Buka tab **Scan AI** → tempel API key (tersimpan di Firestore akun Anda,
+   tersinkron antar perangkat). Alternatif: bake saat build dengan
+   `--dart-define=ANTHROPIC_API_KEY=sk-ant-...`.
+3. Pilih gambar → **Scan dengan AI** → review hasil (jenis, nominal, tanggal,
+   akun, kategori, rincian item) → **Simpan Transaksi**.
+
+Catatan teknis: gambar di-resize maks 1568px & dikompres JPEG (paket `image`)
+sebelum dikirim base64 ke `POST /v1/messages`; respons dipaksa berbentuk JSON
+via `output_config.format` (json_schema), termasuk hint akun (mis. bayar pakai
+GoPay → akun "GoPay") dan kategori yang dipetakan ke kategori milikmu.
+
 ## Fitur yang diport
 
 - ✅ Auth Firebase Email/Password
 - ✅ Dashboard: summary kas, net worth, history, top pengeluaran, chart cash flow (custom paint dengan mode combo/bar/area/line)
 - ✅ Catat Pemasukan / Pengeluaran (+ Split Bill otomatis bikin Piutang)
+- ✅ **Scan AI**: struk belanja / QRIS / invoice / bukti transfer → transaksi otomatis (Claude vision)
 - ✅ Mutasi/Transfer antar akun (+ biaya admin opsional, pie distribusi liquid)
 - ✅ Investasi (Saham/Crypto/Emas/Reksadana/Tabungan Bank), refresh harga live, jual aset, perhitungan P/L
 - ✅ Utang/Piutang dengan tombol Lunas
@@ -146,6 +167,16 @@ Di Web, request Yahoo dilewatkan via `corsproxy.io` (sama seperti React). Di mob
 - ✅ Analisis multi-kategori dengan filter akun & rentang tanggal
 - ✅ Backup/Restore CSV (format sama dengan React export)
 - ✅ Manajemen Akun, Kategori, Custom Budget
+
+## Desain UI
+
+Tema **retro minimalism**: latar kertas hangat (`#F5F1E6`), tinta pekat
+(`#22201B`) dengan border 1px, aksen pudar ala cetakan lawas (mustard, lumut,
+bata, slate), tipografi monospace + label kapital ber-letter-spacing, dan
+bayangan keras kecil hanya pada elemen interaktif. Token warna ada di
+`lib/config/constants.dart` (`RetroColor`), komponen dasar di
+`lib/widgets/common/retro.dart` (`RetroBox`, `RetroButton`,
+`RetroSectionTitle`, dst).
 
 ## Lisensi
 Personal use, ikuti repo asli kieWallet.

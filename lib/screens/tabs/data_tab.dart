@@ -23,12 +23,15 @@ class DataTab extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const Text('PENGATURAN DATA SERVER',
-                  style: TextStyle(fontWeight: FontWeight.w900, fontSize: 14)),
-              const SizedBox(height: 8),
+              const RetroSectionTitle('Pengaturan Data Server',
+                  icon: Icons.inventory_2_outlined),
               Row(children: [
-                const Text('Status Sinkronisasi:',
-                    style: TextStyle(fontWeight: FontWeight.w900, fontSize: 11)),
+                const Text('STATUS SINKRONISASI',
+                    style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 9.5,
+                        letterSpacing: 0.8,
+                        color: RetroColor.gray500)),
                 const SizedBox(width: 8),
                 Icon(state.user != null ? Icons.check_circle : Icons.storage,
                     size: 14,
@@ -105,22 +108,18 @@ class DataTab extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text('AKUN BANK & DOMPET',
-                  style: TextStyle(fontWeight: FontWeight.w900, fontSize: 14)),
-              RetroButton(
-                color: Colors.black,
-                textColor: Colors.white,
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                onPressed: () => _addNameDialog(context, state, 'Akun Baru',
-                    'Cth: SeaBank, Cash', (n) => state.addAccount(n)),
-                child: const Text('+ BARU', style: TextStyle(fontSize: 10)),
-              ),
-            ],
+          RetroSectionTitle(
+            'Akun Bank & Dompet',
+            trailing: RetroButton(
+              color: RetroColor.ink,
+              textColor: RetroColor.cream,
+              shadowOffset: 0,
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              onPressed: () => _addNameDialog(context, state, 'Akun Baru',
+                  'Cth: SeaBank, Cash', (n) => state.addAccount(n)),
+              child: const Text('+ BARU', style: TextStyle(fontSize: 9)),
+            ),
           ),
-          const Divider(color: Colors.black, thickness: 4),
           Wrap(
             spacing: 6,
             runSpacing: 6,
@@ -130,12 +129,11 @@ class DataTab extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    border: Border.all(color: Colors.black, width: 2),
-                    boxShadow: const [BoxShadow(color: Colors.black, offset: Offset(2, 2))],
+                    border: Border.all(color: RetroColor.ink, width: 1),
                   ),
                   child: Text(a,
                       style:
-                          const TextStyle(fontWeight: FontWeight.w900, fontSize: 11)),
+                          const TextStyle(fontWeight: FontWeight.w700, fontSize: 11)),
                 ),
             ],
           ),
@@ -151,22 +149,18 @@ class DataTab extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text('KATEGORI PENGELUARAN',
-                  style: TextStyle(fontWeight: FontWeight.w900, fontSize: 14)),
-              RetroButton(
-                color: Colors.black,
-                textColor: Colors.white,
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                onPressed: () => _addNameDialog(context, state, 'Kategori Baru',
-                    'Cth: Skincare, Elektronik', (n) => state.addExpenseCat(n)),
-                child: const Text('+ BARU', style: TextStyle(fontSize: 10)),
-              ),
-            ],
+          RetroSectionTitle(
+            'Kategori Pengeluaran',
+            trailing: RetroButton(
+              color: RetroColor.ink,
+              textColor: RetroColor.cream,
+              shadowOffset: 0,
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              onPressed: () => _addNameDialog(context, state, 'Kategori Baru',
+                  'Cth: Skincare, Elektronik', (n) => state.addExpenseCat(n)),
+              child: const Text('+ BARU', style: TextStyle(fontSize: 9)),
+            ),
           ),
-          const Divider(color: Colors.black, thickness: 4),
           Wrap(
             spacing: 6,
             runSpacing: 6,
@@ -176,12 +170,11 @@ class DataTab extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    border: Border.all(color: Colors.black, width: 2),
-                    boxShadow: const [BoxShadow(color: Colors.black, offset: Offset(2, 2))],
+                    border: Border.all(color: RetroColor.ink, width: 1),
                   ),
                   child: Text(c,
                       style:
-                          const TextStyle(fontWeight: FontWeight.w900, fontSize: 11)),
+                          const TextStyle(fontWeight: FontWeight.w700, fontSize: 11)),
                 ),
             ],
           ),
@@ -197,21 +190,17 @@ class DataTab extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text('ATUR KENDALI BUDGET',
-                  style: TextStyle(fontWeight: FontWeight.w900, fontSize: 14)),
-              RetroButton(
-                color: Colors.black,
-                textColor: Colors.white,
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                onPressed: () => _budgetDialog(context, state, null),
-                child: const Text('+ BUDGET', style: TextStyle(fontSize: 10)),
-              ),
-            ],
+          RetroSectionTitle(
+            'Atur Kendali Budget',
+            trailing: RetroButton(
+              color: RetroColor.ink,
+              textColor: RetroColor.cream,
+              shadowOffset: 0,
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              onPressed: () => _budgetDialog(context, state, null),
+              child: const Text('+ BUDGET', style: TextStyle(fontSize: 9)),
+            ),
           ),
-          const Divider(color: Colors.black, thickness: 4),
           if (state.customBudgets.isEmpty)
             const Padding(
               padding: EdgeInsets.symmetric(vertical: 16),
@@ -229,8 +218,7 @@ class DataTab extends StatelessWidget {
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: Colors.white,
-        border: Border.all(color: Colors.black, width: 2),
-        boxShadow: const [BoxShadow(color: Colors.black, offset: Offset(2, 2))],
+        border: Border.all(color: RetroColor.ink, width: 1),
       ),
       child: Row(
         children: [
@@ -247,7 +235,7 @@ class DataTab extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 4),
                   decoration: BoxDecoration(
                     color: RetroColor.yellow200,
-                    border: Border.all(color: Colors.black, width: 1),
+                    border: Border.all(color: RetroColor.ink, width: 1),
                   ),
                   child: Text('Limit: ${formatRp(b.limit)}',
                       style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w900)),
@@ -260,11 +248,13 @@ class DataTab extends StatelessWidget {
             ),
           ),
           IconButton(
-            icon: const Icon(Icons.edit, size: 16, color: Colors.blue),
+            icon: const Icon(Icons.edit_outlined,
+                size: 16, color: RetroColor.blue500),
             onPressed: () => _budgetDialog(context, state, b),
           ),
           IconButton(
-            icon: const Icon(Icons.delete, size: 16, color: Colors.red),
+            icon: const Icon(Icons.delete_outline,
+                size: 16, color: RetroColor.red500),
             onPressed: () async {
               final ok = await confirmDialog(context, 'Yakin hapus budget ${b.name}?');
               if (ok) state.deleteBudget(b.id);
@@ -294,10 +284,7 @@ class DataTab extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Text(title,
-                        style:
-                            const TextStyle(fontWeight: FontWeight.w900, fontSize: 16)),
-                    const Divider(color: Colors.black, thickness: 4),
+                    RetroSectionTitle(title),
                     RetroTextField(label: 'Nama', hint: hint, onChanged: (v) => val = v),
                     const SizedBox(height: 12),
                     Row(children: [
@@ -365,24 +352,26 @@ class DataTab extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Text(existing == null ? 'BUDGET BARU' : 'EDIT BUDGET',
-                          style:
-                              const TextStyle(fontWeight: FontWeight.w900, fontSize: 16)),
-                      const Divider(color: Colors.black, thickness: 4),
+                      RetroSectionTitle(
+                          existing == null ? 'Budget Baru' : 'Edit Budget'),
                       RetroTextField(
                           label: 'Nama Budget',
                           initialValue: name,
                           onChanged: (v) => name = v),
                       const SizedBox(height: 8),
-                      const Text('Cakup Pengeluaran Dari:',
-                          style: TextStyle(fontWeight: FontWeight.w900, fontSize: 11)),
+                      const Text('CAKUP PENGELUARAN DARI',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 9.5,
+                              letterSpacing: 0.8,
+                              color: RetroColor.gray500)),
                       Container(
                         height: 180,
                         margin: const EdgeInsets.only(top: 4),
                         padding: const EdgeInsets.all(6),
                         decoration: BoxDecoration(
                           color: Colors.white,
-                          border: Border.all(color: Colors.black, width: 2),
+                          border: Border.all(color: RetroColor.ink, width: 1),
                         ),
                         child: available.isEmpty
                             ? const Center(

@@ -42,41 +42,41 @@ class _InvestTabState extends State<InvestTab> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Expanded(
-                    child: Text('RINGKASAN ASET',
-                        style: TextStyle(fontWeight: FontWeight.w900, fontSize: 14)),
-                  ),
-                  InkWell(
-                    onTap: () => state.toggleHide('invest'),
-                    child: Icon(
-                        state.hideInvest ? Icons.visibility_off : Icons.visibility,
-                        size: 18),
-                  ),
-                  const SizedBox(width: 8),
-                  RetroButton(
-                    onPressed: state.marketLoading
-                        ? null
-                        : () async {
-                            final r = await state.refreshMarketPrices();
-                            state.showPopup(
-                                'Refresh: ${r.ok} OK, ${r.failed} gagal',
-                                type: r.failed > 0 && r.ok == 0 ? 'error' : 'success');
-                          },
-                    color: RetroColor.yellow400,
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    child: Row(mainAxisSize: MainAxisSize.min, children: [
-                      Icon(state.marketLoading ? Icons.hourglass_top : Icons.refresh,
-                          size: 14),
-                      const SizedBox(width: 4),
-                      const Text('Refresh', style: TextStyle(fontSize: 10)),
-                    ]),
-                  ),
-                ],
+              RetroSectionTitle(
+                'Ringkasan Aset',
+                icon: Icons.show_chart,
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    InkWell(
+                      onTap: () => state.toggleHide('invest'),
+                      child: Icon(
+                          state.hideInvest ? Icons.visibility_off : Icons.visibility,
+                          size: 16),
+                    ),
+                    const SizedBox(width: 8),
+                    RetroButton(
+                      onPressed: state.marketLoading
+                          ? null
+                          : () async {
+                              final r = await state.refreshMarketPrices();
+                              state.showPopup(
+                                  'Refresh: ${r.ok} OK, ${r.failed} gagal',
+                                  type: r.failed > 0 && r.ok == 0 ? 'error' : 'success');
+                            },
+                      color: RetroColor.yellow400,
+                      shadowOffset: 0,
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      child: Row(mainAxisSize: MainAxisSize.min, children: [
+                        Icon(state.marketLoading ? Icons.hourglass_top : Icons.refresh,
+                            size: 12),
+                        const SizedBox(width: 4),
+                        const Text('REFRESH', style: TextStyle(fontSize: 9)),
+                      ]),
+                    ),
+                  ],
+                ),
               ),
-              const Divider(color: Colors.black, thickness: 4),
               _summaryCard('Tabungan di Bank', inv.savings, RetroColor.blue700,
                   state.hideInvest),
               const SizedBox(height: 8),
@@ -92,9 +92,7 @@ class _InvestTabState extends State<InvestTab> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const Text('TAMBAH ASET / TABUNGAN BARU',
-                  style: TextStyle(fontWeight: FontWeight.w900, fontSize: 14)),
-              const Divider(color: Colors.black, thickness: 4),
+              const RetroSectionTitle('Tambah Aset / Tabungan Baru'),
               RetroDropdown<String>(
                 label: 'Jenis Aset',
                 value: type,
@@ -159,7 +157,7 @@ class _InvestTabState extends State<InvestTab> {
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
                     color: RetroColor.green50,
-                    border: Border.all(color: Colors.black, width: 2),
+                    border: Border.all(color: RetroColor.ink, width: 1),
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -168,11 +166,10 @@ class _InvestTabState extends State<InvestTab> {
                         Checkbox(
                           value: isDeduct,
                           onChanged: (v) => setState(() => isDeduct = v ?? false),
-                          activeColor: Colors.black,
                         ),
                         const Expanded(
                           child: Text('Potong Saldo Kas untuk Pembelian Aset?',
-                              style: TextStyle(fontWeight: FontWeight.w900, fontSize: 11)),
+                              style: TextStyle(fontWeight: FontWeight.w700, fontSize: 11)),
                         ),
                       ]),
                       if (isDeduct)
@@ -210,15 +207,17 @@ class _InvestTabState extends State<InvestTab> {
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: Colors.white,
-        border: Border.all(color: Colors.black, width: 2),
-        boxShadow: const [BoxShadow(color: Colors.black, offset: Offset(2, 2))],
+        border: Border.all(color: RetroColor.ink, width: 1),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(label.toUpperCase(),
               style: const TextStyle(
-                  fontSize: 10, fontWeight: FontWeight.w900, color: RetroColor.gray500)),
+                  fontSize: 9,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 1,
+                  color: RetroColor.gray500)),
           Text(displayRp(value, hidden: hidden),
               style: TextStyle(
                   fontWeight: FontWeight.w900,
@@ -284,9 +283,7 @@ class _InvestTabState extends State<InvestTab> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('DAFTAR PORTOFOLIO & TABUNGAN',
-              style: TextStyle(fontWeight: FontWeight.w900, fontSize: 14)),
-          const Divider(color: Colors.black, thickness: 4),
+          const RetroSectionTitle('Daftar Portofolio & Tabungan'),
           if (state.portfolio.isEmpty)
             const Padding(
               padding: EdgeInsets.symmetric(vertical: 24),
@@ -313,7 +310,7 @@ class _InvestTabState extends State<InvestTab> {
       padding: const EdgeInsets.symmetric(vertical: 6),
       child: Container(
         padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 2)),
+        decoration: BoxDecoration(border: Border.all(color: RetroColor.ink, width: 1)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -328,10 +325,11 @@ class _InvestTabState extends State<InvestTab> {
                       Container(
                         margin: const EdgeInsets.only(top: 4),
                         padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                        color: Colors.black,
+                        color: RetroColor.ink,
                         child: Text(
                           '${p.type}${p.account.isNotEmpty ? " - ${p.account}" : ""}',
-                          style: const TextStyle(color: Colors.white, fontSize: 9),
+                          style: const TextStyle(
+                              color: RetroColor.cream, fontSize: 9, letterSpacing: 0.5),
                         ),
                       ),
                     ],
@@ -378,7 +376,8 @@ class _InvestTabState extends State<InvestTab> {
                     child: const Text('JUAL', style: TextStyle(fontSize: 10)),
                   ),
                 IconButton(
-                  icon: const Icon(Icons.delete, size: 16, color: Colors.red),
+                  icon: const Icon(Icons.delete_outline,
+                      size: 16, color: RetroColor.red500),
                   onPressed: () async {
                     final ok = await confirmDialog(
                         context, 'Yakin hapus ${p.name} dari portofolio?');
@@ -420,9 +419,7 @@ class _InvestTabState extends State<InvestTab> {
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        Text('JUAL: ${p.name}',
-                            style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 16)),
-                        const Divider(color: Colors.black, thickness: 4),
+                        RetroSectionTitle('Jual: ${p.name}'),
                         RetroTextField(
                           label: 'Kuantitas Dijual',
                           initialValue: sellQty,
@@ -448,15 +445,18 @@ class _InvestTabState extends State<InvestTab> {
                         Container(
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                            color: RetroColor.yellow200,
-                            border: Border.all(color: Colors.black, width: 2),
+                            color: RetroColor.yellow100,
+                            border: Border.all(color: RetroColor.ink, width: 1),
                           ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text('ESTIMASI PEMASUKAN:',
+                              const Text('ESTIMASI PEMASUKAN',
                                   style: TextStyle(
-                                      fontSize: 10, fontWeight: FontWeight.w900)),
+                                      fontSize: 9,
+                                      letterSpacing: 1,
+                                      fontWeight: FontWeight.w700,
+                                      color: RetroColor.gray500)),
                               Text(formatRp(est),
                                   style: const TextStyle(
                                       fontSize: 18,

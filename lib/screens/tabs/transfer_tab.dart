@@ -52,16 +52,19 @@ class _TransferTabState extends State<TransferTab> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('DISTRIBUSI UANG PEGANGAN',
-                  style: TextStyle(fontWeight: FontWeight.w900, fontSize: 14)),
-              const Divider(color: Colors.black, thickness: 4),
+              const RetroSectionTitle('Distribusi Uang Pegangan',
+                  icon: Icons.pie_chart_outline),
               Center(child: PieDistribution(slices: slices, size: 200)),
               const SizedBox(height: 12),
               Center(
                 child: Column(
                   children: [
-                    const Text('Total Kas Pegangan',
-                        style: TextStyle(fontSize: 10, fontWeight: FontWeight.w900)),
+                    const Text('TOTAL KAS PEGANGAN',
+                        style: TextStyle(
+                            fontSize: 9,
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 1,
+                            color: RetroColor.gray500)),
                     Text(displayRp(total, hidden: state.hideLiquid),
                         style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w900)),
                   ],
@@ -75,28 +78,29 @@ class _TransferTabState extends State<TransferTab> {
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      border: Border.all(color: Colors.black, width: 2),
-                      boxShadow: const [BoxShadow(color: Colors.black, offset: Offset(2, 2))],
+                      border: Border.all(color: RetroColor.ink, width: 1),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Row(children: [
                           Container(
-                            width: 16, height: 16,
+                            width: 10, height: 10,
                             decoration: BoxDecoration(
                               color: retroColors[i % retroColors.length],
-                              border: Border.all(color: Colors.black, width: 2),
+                              border: Border.all(color: RetroColor.ink, width: 1),
                             ),
                           ),
                           const SizedBox(width: 8),
                           Text(liquid[i].key,
-                              style: const TextStyle(fontWeight: FontWeight.w900)),
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.w700, fontSize: 12)),
                         ]),
                         Text(displayRp(liquid[i].value, hidden: state.hideLiquid),
                             style: const TextStyle(
-                                fontWeight: FontWeight.w900,
+                                fontWeight: FontWeight.w700,
                                 fontFamily: 'monospace',
+                                fontSize: 12,
                                 color: RetroColor.green700)),
                       ],
                     ),
@@ -112,12 +116,11 @@ class _TransferTabState extends State<TransferTab> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const Text('MUTASI / TRANSFER ANTAR AKUN',
-                  style: TextStyle(fontWeight: FontWeight.w900, fontSize: 14)),
-              const Divider(color: Colors.black, thickness: 4),
+              const RetroSectionTitle('Mutasi / Transfer Antar Akun',
+                  icon: Icons.swap_horiz),
               const Text(
-                'Catat pemindahan uang dari bank ke e-wallet tanpa mempengaruhi laporan untung-rugi bulan ini!',
-                style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700),
+                'Catat pemindahan uang dari bank ke e-wallet tanpa mempengaruhi laporan untung-rugi bulan ini.',
+                style: TextStyle(fontSize: 11, color: RetroColor.gray500),
               ),
               const SizedBox(height: 12),
               RetroDropdown<String>(

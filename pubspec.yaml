@@ -33,6 +33,9 @@ dependencies:
   # Icons (Lucide-equivalent)
   lucide_icons: ^0.257.0
 
+  # Resize/compress gambar struk sebelum dikirim ke AI vision (pure Dart)
+  image: ^4.2.0
+
   # Charts (cadangan; banyak chart custom CustomPainter)
   fl_chart: ^0.69.0
 
