@@ -1,0 +1,12 @@
+{
+  "name": "KieWallet",
+  "short_name": "KieWallet",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#f4f0e6",
+  "theme_color": "#facc15",
+  "description": "kiezu's Money Management",
+  "orientation": "portrait-primary",
+  "prefer_related_applications": false,
+  "icons": []
+}

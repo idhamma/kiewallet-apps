@@ -1,0 +1,43 @@
+name: kiewallet
+description: KieWallet - personal finance tracker, ported from React to Flutter (Web + Mobile).
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.3.0 <4.0.0'
+  flutter: '>=3.22.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.6
+
+  # Firebase (sinkron dengan project web yang sama)
+  firebase_core: ^3.6.0
+  firebase_auth: ^5.3.1
+  cloud_firestore: ^5.4.4
+
+  # State management
+  provider: ^6.1.2
+
+  # HTTP for market APIs (CoinGecko / Yahoo / Logam Mulia)
+  http: ^1.2.2
+
+  # Formatting
+  intl: ^0.19.0
+
+  # File picker for CSV import/export (web + mobile + desktop)
+  file_picker: ^8.1.2
+  file_saver: ^0.2.13
+
+  # Icons (Lucide-equivalent)
+  lucide_icons: ^0.257.0
+
+  # Charts (cadangan; banyak chart custom CustomPainter)
+  fl_chart: ^0.69.0
+
+dev_dependencies:
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
